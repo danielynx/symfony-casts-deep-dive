@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+            <!-- Article List -->
+
+            <div class="col-sm-12 col-md-8">
+
+                <!-- H1 Article -->
+                <a class="main-article-link" href="#">
+                    <div class="main-article mb-5 pb-3">
+                        <img src="{{ asset('build/images/meteor-shower.jpg') }}" alt="meteor shower">
+                        <h1 class="text-center mt-2">Ursid Meteor Shower: <br>Healthier than a regular shower?</h1>
+                    </div>
+                </a>
+
+                <!-- Supporting Articles -->
+
+                {% for article in articles %}
+                <div class="article-container my-1">
+                    <a href="{{ path('article_show', {slug: article.slug}) }}">
+                        <img class="article-img" src="{{ article.imagePath|imagine_filter('squared_thumbnail_small') }}">
+                        <div class="article-title d-inline-block pl-3 align-middle">
+                            <span>{{ article.title }}</span>
+                            <small>({{ article.nonDeletedComments|length }} comments)</small>
+                            <br>
+                            {% for tag in article.tags %}
+                                <small>
+                                    <span class="badge badge-light">{{ tag.name }}</span>
+                                </small>
+                            {% endfor %}
+                            <br>
+                            <span class="align-left article-details"><img class="article-author-img rounded-circle" src="{{ asset('build/images/alien-profile.png') }}"> {{ article.author }} </span>
+                            <span class="pl-5 article-details float-right"> {{ article.publishedAt ? article.publishedAt|ago }}</span>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Right bar ad space -->
+
+
+            <div class="col-sm-12 col-md-4 text-center">
+                <div class="ad-space mx-auto mt-1 pb-2 pt-2">
+                    <img class="advertisement-img" src="{{ asset('build/images/space-ice.png') }}">
+                    <p><span class="advertisement-text">New:</span> Space Ice Cream!</p>
+                    <button class="btn btn-info">Buy Now!</button>
+
+                    {% if isMac %}
+                        <hr>
+                        <small>BTW, you're using a Mac!</small>
+                    {% endif %}
+                </div>
+
+                {{ render(controller('App\\Controller\\PartialController::trendingQuotes', {
+                    isMac: isMac
+                })) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
